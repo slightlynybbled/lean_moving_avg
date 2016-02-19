@@ -1,0 +1,12 @@
+# PNG output and CSV for all plots
+set term png
+set datafile sep ','
+set key bottom right
+
+set output "dataplot.png"
+set xrange [15:*]
+plot "data.csv" using 1:2 with lines title "Sample Data", \
+"data.csv" using 1:3 with lines title "Array-based Moving Average", \
+"data.csv" using 1:4 with lines title "Lean Moving Average"
+
+
