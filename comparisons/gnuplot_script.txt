@@ -1,7 +1,7 @@
 # PNG output and CSV for all plots
 set term png
 set datafile sep ','
-set key bottom right
+set key top right
 
 set output "dataplot.png"
 set xrange [15:*]

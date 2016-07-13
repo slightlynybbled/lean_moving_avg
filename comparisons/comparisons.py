@@ -1,8 +1,9 @@
 import csv
 import random
+import math
 
-# waveform types: 'impulse', 'random', 'sine'
-waveform_type = 'random'
+# waveform types: 'impulse', 'random', 'noisy-sine'
+waveform_type = 'noisy-sine'
 
 # come up with some data to start
 sample_history = []
@@ -19,13 +20,21 @@ if waveform_type == 'impulse':
         sample_history.append(32767)
         sample_num.append(len(sample_num))
 
-else:
+elif waveform_type == 'random':
     sample_history = [random.randint(0,32768) for i in range(0, 80)]
     sample_num = [e for e in range(0, 80)]
+else:
+    noise_amplitude = 1000
+    num_of_samples = 1000
+    for i in range(num_of_samples):
+        sine_data = int(32768.0 * math.sin(2 * math.pi * i/num_of_samples))
+        noise_data = random.randint(-3000, 3000);
+        sample_history.append(sine_data + noise_data)
+        sample_num.append(i)
 
 # standard moving average
 moving_avg_array = []
-moving_avg_depth = 16
+moving_avg_depth = 32
 for i, sample in enumerate(sample_history):
     if i < (moving_avg_depth - 1):
         # initialization of the filter
@@ -43,7 +52,7 @@ avg = 0
 for sample in sample_history:
     accum += sample
     accum -= avg
-    avg = accum >> 3
+    avg = accum >> 4
     moving_avg_lean.append(avg)
 
 rows = []
